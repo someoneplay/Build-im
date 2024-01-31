@@ -1,11 +1,11 @@
 #=================================================
-# Description: Build OpenWrt using GitHub  Actions
+# Description: Build OpenWrt using GitHub Actions
 # Lisence: MIT
 # Author: eSirPlayground
 # Youtube Channel: https://goo.gl/fvkdwm 
 #=================================================
 
-name: li2.zaijian.5.15
+name: le2ji.6.6
 
 # Add a button to trigger the workflow
 on: 
@@ -20,6 +20,20 @@ jobs:
     - name: Checkout
       uses: actions/checkout@master
 
+    - name: 释放磁盘空间
+      uses: jlumbroso/free-disk-space@main
+      with:
+        # this might remove tools that are actually needed,
+        # if set to "true" but frees about 6 GB
+        tool-cache: true
+        # all of these default to true, but feel free to set to
+        # "false" if necessary for your workflow
+        android: true
+        dotnet: true
+        haskell: true
+        large-packages: true
+        swap-storage: true
+    
     - name: Initialization environment
       env:
         DEBIAN_FRONTEND: noninteractive
@@ -51,8 +65,8 @@ jobs:
 
     - name: Clone source code
       env: 
-        REPO_URL: https://github.com/someoneplay/li
-        REPO_BRANCH: 23.05
+        REPO_URL: https://github.com/someoneplay/lede
+        REPO_BRANCH: master
       run: |
         git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
         cd openwrt
@@ -78,7 +92,7 @@ jobs:
 
     - name: Configuration Customization - Build_x86_64
       env:
-        CONFIG_FILE: 'li2.zaijian.5.15.config'
+        CONFIG_FILE: 'le2ji.6.6.config'
       run: |
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
         chmod +x ./customize.sh && ./customize.sh
